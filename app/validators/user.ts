@@ -7,7 +7,6 @@ export const createUserValidator = vine.compile(
       email: vine.string().trim().email().unique(async (db, value, field) => {
         const user = await db
           .from('users')
-          .whereNot('id', field.meta.id)
           .where('email', value)
           .first()
         return !user
@@ -15,4 +14,11 @@ export const createUserValidator = vine.compile(
       password: vine.string().trim().minLength(10)
     })
   )
-  
+
+
+export const signInValidator = vine.compile(
+  vine.object({
+    email : vine.string().trim().email(),
+    password : vine.string().minLength(10)
+  })
+)
